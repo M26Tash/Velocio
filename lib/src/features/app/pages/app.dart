@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:velocio/src/common/theme/velocio_theme.dart';
 import 'package:velocio/src/common/utils/enum/theme_type.dart';
 import 'package:velocio/src/features/app/cubit/app_cubit.dart';
 import 'package:velocio/src/features/auth_page/pages/auth_page.dart';
+import 'package:velocio/src/localization/flutter_gen/velocio_localization.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -103,6 +105,12 @@ class _AppState extends State<App> {
                 ),
                 builder: (context, state) {
                   return MaterialApp(
+                    localizationsDelegates: const [
+                      CountryLocalizations.delegate,
+                      ...VelocioLocalization.localizationsDelegates,
+                    ],
+                    supportedLocales: VelocioLocalization.supportedLocales,
+                    locale: const Locale('en'),
                     theme: context.themeData,
                     home: const AuthPage(),
                   );

@@ -1,0 +1,12 @@
+arb-dir: lib/src/localization/l10n
+template-arb-file: app_en.arb
+output-localization-file: velocio_localization.dart
+output-class: VelocioLocalization
+nullable-getter: false
+synthetic-package: false
+output-dir: lib/src/localization/flutter_gen
+supported-languages:
+  - en
+  - ru
+  - tr
+  - it
