@@ -15,9 +15,14 @@ final class VelocioTheme extends Equatable {
   final Color secondaryTextColor;
   final Color tertiaryTextColor;
   final Color quaternaryTextColor;
+  final Color whiteTextColor;
 
   final Color primaryIconColor;
   final Color secondaryIconColor;
+
+  final Color inputFieldFillColor;
+
+  final Color errorColor;
 
   final Color transparentColor;
 
@@ -39,8 +44,11 @@ final class VelocioTheme extends Equatable {
     secondaryTextColor,
     tertiaryTextColor,
     quaternaryTextColor,
+    whiteTextColor,
     primaryIconColor,
     secondaryIconColor,
+    inputFieldFillColor,
+    errorColor,
     transparentColor,
     statusBarBrightness,
     navigationBarBrightness,
@@ -59,8 +67,11 @@ final class VelocioTheme extends Equatable {
     required this.secondaryTextColor,
     required this.tertiaryTextColor,
     required this.quaternaryTextColor,
+    required this.whiteTextColor,
     required this.primaryIconColor,
     required this.secondaryIconColor,
+    required this.inputFieldFillColor,
+    required this.errorColor,
     required this.transparentColor,
     required this.statusBarBrightness,
     required this.navigationBarBrightness,

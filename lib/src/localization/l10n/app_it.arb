@@ -1,3 +1,24 @@
 {
-    "hello": "Salve"
+    "loginYourAccount": "Accedi al tuo account",
+    "phoneNumberOrEmail": "Numero di telefono / Email",
+    "password": "Password",
+    "forgotPassword": "Hai dimenticato la password?",
+    "login": "Accedi",
+    "dontHaveAccount": "Non hai un account?",
+    "signUp": "Registrati",
+    "name": "Nome",
+    "email": "Email",
+    "phoneNumber": "Numero di telefono",
+    "createAccount": "Crea un account",
+    "doYouHaveAccount": "Hai un account?",
+    "enterOtp": "Inserisci OTP",
+    "enterOtpDescription": "Inserisci il codice OTP che ti abbiamo appena inviato alla tua Email registrata",
+    "enter": "Inserisci",
+    "didntGetOtp": "Non hai ricevuto l'OTP?",
+    "resendOtp": "Reinvia OTP",
+    "resetPassword": "Reimposta Password",
+    "resetPasswordDescription": "Si prega di inserire la nuova password due volte per confermare",
+    "newPassword": "Nuova Password",
+    "reEnterNewPassword": "Reinserisci Nuova Password",
+    "submit": "Invia"
 }

@@ -1,3 +1,24 @@
 {
-    "hello": "Selam"
+    "loginYourAccount": "Hesabınıza Giriş Yapın",
+    "phoneNumberOrEmail": "Telefon Numarası / E-posta",
+    "password": "Şifre",
+    "forgotPassword": "Şifrenizi mi unuttunuz?",
+    "login": "Giriş Yap",
+    "dontHaveAccount": "Hesabınız yok mu?",
+    "signUp": "Kayıt Ol",
+    "name": "İsim",
+    "email": "E-posta",
+    "phoneNumber": "Telefon Numarası",
+    "createAccount": "Hesap Oluştur",
+    "doYouHaveAccount": "Hesabınız var mı?",
+    "enterOtp": "OTP Girin",
+    "enterOtpDescription": "Kayıtlı E-posta adresinize gönderdiğimiz OTP kodunu girin",
+    "enter": "Girin",
+    "didntGetOtp": "OTP almadınız mı?",
+    "resendOtp": "OTP'yi tekrar gönder",
+    "resetPassword": "Şifreyi Sıfırla",
+    "resetPasswordDescription": "Onaylamak için lütfen yeni şifrenizi iki kez girin",
+    "newPassword": "Yeni Şifre",
+    "reEnterNewPassword": "Yeni Şifreyi Yeniden Girin",
+    "submit": "Gönder"
 }

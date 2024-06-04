@@ -15,6 +15,8 @@ const _balticSea = Color(0xFF212327);
 const _heavyMetal = Color(0xFF27292E);
 const _charcoal = Color(0xFF323438);
 const _languidLavendar = Color(0xFFCCCDD7);
+const _coralRed = Color(0xFFFF3D3D);
+
 
 const _transparent = Color(0x00000000);
 
@@ -29,9 +31,12 @@ const lightTheme = VelocioTheme(
   primaryTextColor: _darkJungleGreen,
   secondaryTextColor: _mistBlue,
   tertiaryTextColor: _bluishGrey,
-  quaternaryTextColor: _bluishGrey,
+  quaternaryTextColor: _cornflower,
+  whiteTextColor: _white,
   primaryIconColor: _darkJungleGreen,
   secondaryIconColor: _bluishGrey,
+  inputFieldFillColor: _whiteSmoke,
+  errorColor: _coralRed,
   transparentColor: _transparent,
   statusBarBrightness: Brightness.light,
   navigationBarBrightness: Brightness.dark,
@@ -49,9 +54,12 @@ const darkTheme = VelocioTheme(
   primaryTextColor: _white,
   secondaryTextColor: _languidLavendar,
   tertiaryTextColor: _bluishGrey,
-  quaternaryTextColor: _bluishGrey,
+  quaternaryTextColor: _cornflower,
+  whiteTextColor: _white,
   primaryIconColor: _white,
   secondaryIconColor: _bluishGrey,
+  inputFieldFillColor: _heavyMetal,
+  errorColor: _coralRed,
   transparentColor: _transparent,
   statusBarBrightness: Brightness.dark,
   navigationBarBrightness: Brightness.dark,

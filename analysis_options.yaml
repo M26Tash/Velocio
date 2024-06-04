@@ -24,6 +24,7 @@ analyzer:
     - "**/*.gr.dart"
     - "**/*.freezed.dart"
     - "**/*.config.dart"
+    - lib/src/localization
 
 dart_code_metrics:
   extends:
@@ -33,6 +34,7 @@ dart_code_metrics:
         exclude:
           - lib/src/features/**
           - lib/src/common/widgets/**
+          - lib/src/localization
     - arguments-ordering: false
     - avoid-banned-imports: false
     - avoid-missing-enum-constant-in-map: false

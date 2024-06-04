@@ -11,7 +11,7 @@ import 'package:velocio/src/common/theme/theme_provider.dart';
 import 'package:velocio/src/common/theme/velocio_theme.dart';
 import 'package:velocio/src/common/utils/enum/theme_type.dart';
 import 'package:velocio/src/features/app/cubit/app_cubit.dart';
-import 'package:velocio/src/features/auth_page/pages/auth_page.dart';
+import 'package:velocio/src/features/reset_password_page/pages/reset_password_page.dart';
 import 'package:velocio/src/localization/flutter_gen/velocio_localization.dart';
 
 class App extends StatefulWidget {
@@ -112,7 +112,7 @@ class _AppState extends State<App> {
                     supportedLocales: VelocioLocalization.supportedLocales,
                     locale: const Locale('en'),
                     theme: context.themeData,
-                    home: const AuthPage(),
+                    home: const ResetPasswordPage(),
                   );
                 },
               ),

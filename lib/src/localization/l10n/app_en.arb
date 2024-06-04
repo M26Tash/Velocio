@@ -1,3 +1,24 @@
 {
-    "hello": "hello"
+    "loginYourAccount": "Login Your Account",
+    "phoneNumberOrEmail": "Phone Number / Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password ?",
+    "login": "Login",
+    "dontHaveAccount": "Don’t have account?",
+    "signUp": "Sign Up",
+    "name": "Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "createAccount": "Create Account",
+    "doYouHaveAccount": "Do you have account?",
+    "enterOtp": "Enter OTP",
+    "enterOtpDescription": "Enter the OTP code we just sent you on your registered Email",
+    "enter": "Enter",
+    "didntGetOtp": "Didn’t get OTP?",
+    "resendOtp": "Resend OTP",
+    "resetPassword": "Reset Password",
+    "resetPasswordDescription":"Please enter your new password twice to confirm",
+    "newPassword":"New Password",
+    "reEnterNewPassword":"Re-Enter New Password",
+    "submit":"Submit"
 }
