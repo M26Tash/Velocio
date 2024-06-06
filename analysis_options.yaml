@@ -17,6 +17,7 @@ analyzer:
     sort_pub_dependencies: ignore
     unawaited_futures: ignore
     sort_constructors_first: ignore
+    use_setters_to_change_properties: ignore
 
   exclude:
     - "build/**"

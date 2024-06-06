@@ -4,11 +4,14 @@ import 'package:velocio/src/common/utils/constants/app_dimensions.dart';
 import 'package:velocio/src/common/utils/constants/app_fonts.dart';
 import 'package:velocio/src/common/widgets/custom_button/custom_button.dart';
 import 'package:velocio/src/common/widgets/input_field/input_field.dart';
+import 'package:velocio/src/features/auth_page/cubit/auth_cubit.dart';
 import 'package:velocio/src/localization/localizations_ext.dart';
 
 class LoginBody extends StatefulWidget {
+  final AuthCubit cubit;
   final VoidCallback showSignUp;
   const LoginBody({
+    required this.cubit,
     required this.showSignUp,
     super.key,
   });
@@ -96,7 +99,7 @@ class _LoginBodyState extends State<LoginBody> {
             ),
           ],
           text: context.locale.login,
-          onTap: () {},
+          onTap: widget.cubit.navigateToOtpPage,
         ),
         const SizedBox(height: AppDimensions.large),
         Row(

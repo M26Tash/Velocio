@@ -4,11 +4,14 @@ import 'package:velocio/src/common/utils/constants/app_dimensions.dart';
 import 'package:velocio/src/common/utils/constants/app_fonts.dart';
 import 'package:velocio/src/common/widgets/custom_button/custom_button.dart';
 import 'package:velocio/src/common/widgets/input_field/input_field.dart';
+import 'package:velocio/src/features/auth_page/cubit/auth_cubit.dart';
 import 'package:velocio/src/localization/localizations_ext.dart';
 
 class SignUpBody extends StatefulWidget {
+  final AuthCubit cubit;
   final VoidCallback showLogin;
   const SignUpBody({
+    required this.cubit,
     required this.showLogin,
     super.key,
   });

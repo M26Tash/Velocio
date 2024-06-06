@@ -2,8 +2,11 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:velocio/src/common/cubit_scope/cubit_scope.dart';
 import 'package:velocio/src/common/di/injector.dart';
+import 'package:velocio/src/common/navigation/app_router.dart';
+import 'package:velocio/src/common/navigation/configurations.dart';
 import 'package:velocio/src/common/shared_cubits/app_overlay/app_overlay_cubit.dart';
 import 'package:velocio/src/common/theme/app_theme.dart';
 import 'package:velocio/src/common/theme/theme_extension.dart';
@@ -11,7 +14,6 @@ import 'package:velocio/src/common/theme/theme_provider.dart';
 import 'package:velocio/src/common/theme/velocio_theme.dart';
 import 'package:velocio/src/common/utils/enum/theme_type.dart';
 import 'package:velocio/src/features/app/cubit/app_cubit.dart';
-import 'package:velocio/src/features/reset_password_page/pages/reset_password_page.dart';
 import 'package:velocio/src/localization/flutter_gen/velocio_localization.dart';
 
 class App extends StatefulWidget {
@@ -22,6 +24,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  late final GoRouter _router;
+
   final AppOverlayCubit _overlayCubit = i.get<AppOverlayCubit>();
 
   @override
@@ -30,6 +34,13 @@ class _AppState extends State<App> {
 
     _overlayCubit.applyStyle(
       _calculateSystemOverlay(),
+    );
+
+    final initialConfig = authConfig();
+
+    _router = AppRouter.router(
+      initialLocation: initialConfig.path,
+      initialExtra: initialConfig.args,
     );
   }
 
@@ -104,7 +115,11 @@ class _AppState extends State<App> {
                   state,
                 ),
                 builder: (context, state) {
-                  return MaterialApp(
+                  return MaterialApp.router(
+                    routerDelegate: _router.routerDelegate,
+                    routeInformationParser: _router.routeInformationParser,
+                    routeInformationProvider: _router.routeInformationProvider,
+                    backButtonDispatcher: RootBackButtonDispatcher(),
                     localizationsDelegates: const [
                       CountryLocalizations.delegate,
                       ...VelocioLocalization.localizationsDelegates,
@@ -112,7 +127,6 @@ class _AppState extends State<App> {
                     supportedLocales: VelocioLocalization.supportedLocales,
                     locale: const Locale('en'),
                     theme: context.themeData,
-                    home: const ResetPasswordPage(),
                   );
                 },
               ),

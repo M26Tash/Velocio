@@ -1,5 +1,3 @@
-// ignore_for_file: always_use_package_imports, depend_on_referenced_packages, lines_longer_than_80_chars, noop_primitive_operations, public_member_api_docs
-
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -96,7 +94,7 @@ abstract class VelocioLocalization {
     Locale('en'),
     Locale('it'),
     Locale('ru'),
-    Locale('tr'),
+    Locale('tr')
   ];
 
   /// No description provided for @loginYourAccount.

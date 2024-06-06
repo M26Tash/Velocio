@@ -22,13 +22,15 @@ class _AuthPageState extends State<AuthPage> {
     });
   }
 
-  Widget showBody() {
+  Widget showBody(AuthCubit cubit) {
     if (showSignInPage) {
       return LoginBody(
+        cubit: cubit,
         showSignUp: togglePages,
       );
     } else {
       return SignUpBody(
+        cubit: cubit,
         showLogin: togglePages,
       );
     }
@@ -39,9 +41,10 @@ class _AuthPageState extends State<AuthPage> {
     return CubitScope<AuthCubit>(
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
+          final authCubit = CubitScope.of<AuthCubit>(context);
           return Scaffold(
             backgroundColor: context.theme.backgroundColor,
-            body: showBody(),
+            body: showBody(authCubit),
           );
         },
       ),
