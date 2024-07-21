@@ -1,6 +1,6 @@
 # velocio
 
-A new Flutter project.
+ON DEVELOPMENT STAGE
 
 ## Getting Started
 
