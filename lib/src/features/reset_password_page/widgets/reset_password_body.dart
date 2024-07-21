@@ -1,79 +1,59 @@
+// ignore_for_file: lines_longer_than_80_chars, use_if_null_to_convert_nulls_to_bools
+
 import 'package:flutter/material.dart';
-import 'package:velocio/src/common/theme/theme_extension.dart';
-import 'package:velocio/src/common/utils/constants/app_dimensions.dart';
-import 'package:velocio/src/common/utils/constants/app_fonts.dart';
-import 'package:velocio/src/common/widgets/custom_button/custom_button.dart';
-import 'package:velocio/src/common/widgets/input_field/input_field.dart';
+import 'package:velocio/src/features/reset_password_page/cubit/reset_password_cubit.dart';
+import 'package:velocio/src/features/reset_password_page/widgets/page_view_body/enter_email_body.dart';
+import 'package:velocio/src/features/reset_password_page/widgets/page_view_body/enter_otp_body.dart';
+import 'package:velocio/src/features/reset_password_page/widgets/page_view_body/enter_password_body.dart';
 
 class ResetPasswordBody extends StatefulWidget {
-  const ResetPasswordBody({super.key});
+  final ResetPasswordCubit cubit;
+  final String email;
+  const ResetPasswordBody({
+    required this.cubit,
+    required this.email,
+    super.key,
+  });
 
   @override
   State<ResetPasswordBody> createState() => _ResetPasswordBodyState();
 }
 
 class _ResetPasswordBodyState extends State<ResetPasswordBody> {
-  late final TextEditingController newPasswordController;
-  late final TextEditingController confirmNewPasswordController;
+  late final PageController pageController;
 
   @override
   void initState() {
     super.initState();
 
-    newPasswordController = TextEditingController();
-    confirmNewPasswordController = TextEditingController();
+    pageController = PageController();
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    newPasswordController.dispose();
-    confirmNewPasswordController.dispose();
+    pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(AppDimensions.large),
+    return PageView(
+      controller: pageController,
+      physics: const NeverScrollableScrollPhysics(),
       children: [
-        const SizedBox(height: AppDimensions.superLarge),
-        Text(
-          'Reset Password',
-          style: context.themeData.textTheme.displayLarge?.copyWith(
-            color: context.theme.primaryTextColor,
-            fontWeight: AppFonts.weightSemiBold,
-          ),
+        EnterEmailBody(
+          cubit: widget.cubit,
+          controller: pageController,
         ),
-        const SizedBox(height: AppDimensions.small),
-        Text(
-          'Please enter your new password twice to confirm.',
-          style: context.themeData.textTheme.headlineSmall?.copyWith(
-            color: context.theme.secondaryTextColor,
-            fontWeight: AppFonts.weightRegular,
-          ),
+        EnterOtpBody(
+          cubit: widget.cubit,
+          controller: pageController,
+          email: widget.email,
         ),
-        const SizedBox(height: AppDimensions.large),
-        InputField(
-          controller: newPasswordController,
-          hintText: 'New Password',
-        ),
-        const SizedBox(height: AppDimensions.large),
-        InputField(
-          controller: confirmNewPasswordController,
-          hintText: 'Re-Enter New Password',
-        ),
-        const SizedBox(height: AppDimensions.superLarge),
-        CustomButton(
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(0, 2),
-              blurRadius: 5,
-              color: context.theme.mainColor,
-            ),
-          ],
-          text: 'Submit',
-          onTap: () {},
+        EnterPasswordBody(
+          cubit: widget.cubit,
+          controller: pageController,
         ),
       ],
     );

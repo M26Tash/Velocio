@@ -45,7 +45,8 @@ class _OtpBodyState extends State<OtpBody> {
         ),
         const SizedBox(height: AppDimensions.medium),
         Text(
-          context.locale.enterOtpDescription,
+          // context.locale.enterOtpDescription(email),
+          '',
           style: context.themeData.textTheme.headlineSmall?.copyWith(
             color: context.theme.secondaryTextColor,
             fontWeight: AppFonts.weightRegular,

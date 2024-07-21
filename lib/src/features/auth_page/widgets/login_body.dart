@@ -1,7 +1,11 @@
+// ignore_for_file: use_if_null_to_convert_nulls_to_bools
+
 import 'package:flutter/material.dart';
 import 'package:velocio/src/common/theme/theme_extension.dart';
+import 'package:velocio/src/common/utils/constants/app_assets.dart';
 import 'package:velocio/src/common/utils/constants/app_dimensions.dart';
 import 'package:velocio/src/common/utils/constants/app_fonts.dart';
+import 'package:velocio/src/common/utils/extensions/snackbar_context_extension.dart';
 import 'package:velocio/src/common/widgets/custom_button/custom_button.dart';
 import 'package:velocio/src/common/widgets/input_field/input_field.dart';
 import 'package:velocio/src/features/auth_page/cubit/auth_cubit.dart';
@@ -21,6 +25,8 @@ class LoginBody extends StatefulWidget {
 }
 
 class _LoginBodyState extends State<LoginBody> {
+  final _passwordFormKey = GlobalKey<FormState>();
+
   late final TextEditingController emailOrPhoneNumberController;
   late final TextEditingController passwordController;
 
@@ -53,7 +59,8 @@ class _LoginBodyState extends State<LoginBody> {
     return ListView(
       padding: const EdgeInsets.all(AppDimensions.large),
       children: [
-        const SizedBox(height: AppDimensions.superLarge),
+        const SizedBox(height: AppDimensions.extraLarge),
+        Image.asset(AppAssets.signInIllustration),
         Text(
           context.locale.loginYourAccount,
           style: context.themeData.textTheme.displayLarge?.copyWith(
@@ -64,10 +71,11 @@ class _LoginBodyState extends State<LoginBody> {
         const SizedBox(height: AppDimensions.extraLarge),
         InputField(
           controller: emailOrPhoneNumberController,
-          hintText: context.locale.phoneNumberOrEmail,
+          hintText: context.locale.email,
         ),
         const SizedBox(height: AppDimensions.large),
         InputField(
+          formKey: _passwordFormKey,
           controller: passwordController,
           hintText: context.locale.password,
           suffixIcon: IconButton(
@@ -77,9 +85,19 @@ class _LoginBodyState extends State<LoginBody> {
             ),
             onPressed: toggleObscure,
           ),
+          validator: (value) {
+            if (value!.isEmpty) {
+              return context.locale.pleaseReEnterPassword;
+            } else if (value.length < 8) {
+              return context.locale.minimumEightCharacter;
+            } else {
+              return null;
+            }
+          },
         ),
         const SizedBox(height: AppDimensions.medium),
         InkWell(
+          onTap: widget.cubit.navigateToResetPasswordPage,
           child: Text(
             context.locale.forgotPassword,
             style: context.themeData.textTheme.headlineSmall?.copyWith(
@@ -99,7 +117,18 @@ class _LoginBodyState extends State<LoginBody> {
             ),
           ],
           text: context.locale.login,
-          onTap: widget.cubit.navigateToOtpPage,
+          onTap: () {
+            final passwordState = _passwordFormKey.currentState?.validate();
+
+            if (passwordState == true) {
+              widget.cubit.loginWithPassword(
+                email: emailOrPhoneNumberController.text.trim(),
+                password: passwordController.text.trim(),
+                onError: (error) => context.showErrorSnackbar(error),
+                onSuccess: widget.cubit.navigateToMainPage,
+              );
+            }
+          },
         ),
         const SizedBox(height: AppDimensions.large),
         Row(

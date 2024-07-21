@@ -13,7 +13,9 @@ abstract final class AppDimensions {
   static const int expandedMinLines = 7;
   static const int expandedMaxLines = 8;
 
-  static const int pinputLength = 5;
+  static const int pinputLength = 6;
   static const double pinputHeight = 60;
   static const double pinputWidth = 56;
+
+  static const int bioMaxLength = 40;
 }

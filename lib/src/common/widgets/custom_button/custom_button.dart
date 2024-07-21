@@ -6,23 +6,32 @@ import 'package:velocio/src/common/utils/constants/app_dimensions.dart';
 import 'package:velocio/src/common/utils/constants/app_fonts.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback onTap;
 
   final Color? backgroundColor;
   final BoxDecoration? boxDecoration;
   final TextStyle? textStyle;
   final List<BoxShadow>? boxShadow;
+  final Widget? child;
   const CustomButton({
-    required this.text,
     required this.onTap,
+    this.text,
     this.backgroundColor,
     this.boxDecoration,
     this.textStyle,
     this.boxShadow,
+    this.child,
     super.key,
-  });
-  
+  })  : assert(
+          text == null || child == null,
+          'It is impossible to set {[text]} and {[child]} at the same time',
+        ),
+        assert(
+          text != null || child != null,
+          'It is impossible to have {[text]} and {[child]} as null at the same time',
+        );
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -42,9 +51,9 @@ class CustomButton extends StatelessWidget {
                     ),
                     boxShadow: boxShadow,
                   ),
-              child: Center(
+              child: child ?? Center(
                 child: Text(
-                  text,
+                  text!,
                   style: textStyle ??
                       context.themeData.textTheme.headlineMedium?.copyWith(
                         fontWeight: AppFonts.weightMedium,

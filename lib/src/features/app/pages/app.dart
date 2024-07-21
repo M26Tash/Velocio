@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:velocio/src/common/cubit_scope/cubit_scope.dart';
 import 'package:velocio/src/common/di/injector.dart';
 import 'package:velocio/src/common/navigation/app_router.dart';
 import 'package:velocio/src/common/navigation/configurations.dart';
+import 'package:velocio/src/common/shared_cubits/app_locale_cubit/app_locale_cubit.dart';
 import 'package:velocio/src/common/shared_cubits/app_overlay/app_overlay_cubit.dart';
+import 'package:velocio/src/common/shared_cubits/navigation_panel/navigation_panel_cubit.dart';
+import 'package:velocio/src/common/shared_cubits/theme_cubit/theme_shared_cubit.dart';
 import 'package:velocio/src/common/theme/app_theme.dart';
 import 'package:velocio/src/common/theme/theme_extension.dart';
 import 'package:velocio/src/common/theme/theme_provider.dart';
@@ -24,9 +28,12 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final supabase = Supabase.instance.client;
   late final GoRouter _router;
 
   final AppOverlayCubit _overlayCubit = i.get<AppOverlayCubit>();
+  final ThemeCubit _themeCubit = i.get<ThemeCubit>();
+  final AppLocaleCubit _appLocaleCubit = i.get<AppLocaleCubit>();
 
   @override
   void initState() {
@@ -42,12 +49,17 @@ class _AppState extends State<App> {
       initialLocation: initialConfig.path,
       initialExtra: initialConfig.args,
     );
+
+    _themeCubit.readThemeType();
+
+    _appLocaleCubit.readLocale();
   }
 
   VelocioTheme _velocioTheme(AppState state) {
     return switch (state.themeType) {
       ThemeType.light => lightTheme,
       ThemeType.dark => darkTheme,
+      ThemeType.system => darkTheme,
     };
   }
 
@@ -70,6 +82,7 @@ class _AppState extends State<App> {
       return switch (themeType) {
         ThemeType.light => lightStyle,
         ThemeType.dark => darkStyle,
+        ThemeType.system => darkStyle,
       };
     }
 
@@ -102,36 +115,39 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return CubitScope<AppOverlayCubit>(
       child: CubitScope<AppCubit>(
-        child: BlocBuilder<AppCubit, AppState>(
-          builder: (context, appState) {
-            final theme = _velocioTheme(appState);
-            return ThemeProvider(
-              theme: theme,
-              themeData: generateThemeData(theme),
-              child: BlocConsumer<AppOverlayCubit, AppOverlayState>(
-                bloc: _overlayCubit,
-                listener: (context, state) => _overlayListener(
-                  appState.themeType,
-                  state,
+        child: CubitScope<NavigationPanelCubit>(
+          child: BlocBuilder<AppCubit, AppState>(
+            builder: (context, appState) {
+              final theme = _velocioTheme(appState);
+              return ThemeProvider(
+                theme: theme,
+                themeData: generateThemeData(theme),
+                child: BlocConsumer<AppOverlayCubit, AppOverlayState>(
+                  bloc: _overlayCubit,
+                  listener: (context, state) => _overlayListener(
+                    appState.themeType,
+                    state,
+                  ),
+                  builder: (context, state) {
+                    return MaterialApp.router(
+                      routerDelegate: _router.routerDelegate,
+                      routeInformationParser: _router.routeInformationParser,
+                      routeInformationProvider:
+                          _router.routeInformationProvider,
+                      backButtonDispatcher: RootBackButtonDispatcher(),
+                      localizationsDelegates: const [
+                        CountryLocalizations.delegate,
+                        ...VelocioLocalization.localizationsDelegates,
+                      ],
+                      supportedLocales: VelocioLocalization.supportedLocales,
+                      locale: appState.locale,
+                      theme: context.themeData,
+                    );
+                  },
                 ),
-                builder: (context, state) {
-                  return MaterialApp.router(
-                    routerDelegate: _router.routerDelegate,
-                    routeInformationParser: _router.routeInformationParser,
-                    routeInformationProvider: _router.routeInformationProvider,
-                    backButtonDispatcher: RootBackButtonDispatcher(),
-                    localizationsDelegates: const [
-                      CountryLocalizations.delegate,
-                      ...VelocioLocalization.localizationsDelegates,
-                    ],
-                    supportedLocales: VelocioLocalization.supportedLocales,
-                    locale: const Locale('en'),
-                    theme: context.themeData,
-                  );
-                },
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

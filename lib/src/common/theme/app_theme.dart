@@ -17,7 +17,6 @@ const _charcoal = Color(0xFF323438);
 const _languidLavendar = Color(0xFFCCCDD7);
 const _coralRed = Color(0xFFFF3D3D);
 
-
 const _transparent = Color(0x00000000);
 
 const lightTheme = VelocioTheme(
@@ -35,6 +34,7 @@ const lightTheme = VelocioTheme(
   whiteTextColor: _white,
   primaryIconColor: _darkJungleGreen,
   secondaryIconColor: _bluishGrey,
+  whiteIconColor: _white,
   inputFieldFillColor: _whiteSmoke,
   errorColor: _coralRed,
   transparentColor: _transparent,
@@ -58,6 +58,7 @@ const darkTheme = VelocioTheme(
   whiteTextColor: _white,
   primaryIconColor: _white,
   secondaryIconColor: _bluishGrey,
+  whiteIconColor: _white,
   inputFieldFillColor: _heavyMetal,
   errorColor: _coralRed,
   transparentColor: _transparent,
@@ -66,8 +67,7 @@ const darkTheme = VelocioTheme(
   fontFamily: FontsAssets.poppinsFamily,
 );
 
-
-ThemeData generateThemeData(VelocioTheme theme){
+ThemeData generateThemeData(VelocioTheme theme) {
   return ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,

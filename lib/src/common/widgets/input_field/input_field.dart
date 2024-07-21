@@ -60,6 +60,7 @@ final class InputField extends StatelessWidget {
 
   final TextStyle? labelStyle;
 
+  final int? maxLength;
   const InputField({
     this.hintText,
     this.keyboardType,
@@ -84,6 +85,7 @@ final class InputField extends StatelessWidget {
     this.hintStyle,
     this.labelText,
     this.labelStyle,
+    this.maxLength,
     super.key,
   });
 
@@ -171,6 +173,7 @@ final class InputField extends StatelessWidget {
                   ),
             ),
         onChanged: onChanged,
+        maxLength: maxLength,
       ),
     );
   }

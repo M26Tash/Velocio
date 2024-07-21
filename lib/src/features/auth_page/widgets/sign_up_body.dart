@@ -1,7 +1,12 @@
+// ignore_for_file: use_if_null_to_convert_nulls_to_bools
+
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:velocio/src/common/theme/theme_extension.dart';
+import 'package:velocio/src/common/utils/constants/app_assets.dart';
 import 'package:velocio/src/common/utils/constants/app_dimensions.dart';
 import 'package:velocio/src/common/utils/constants/app_fonts.dart';
+import 'package:velocio/src/common/utils/extensions/snackbar_context_extension.dart';
 import 'package:velocio/src/common/widgets/custom_button/custom_button.dart';
 import 'package:velocio/src/common/widgets/input_field/input_field.dart';
 import 'package:velocio/src/features/auth_page/cubit/auth_cubit.dart';
@@ -21,10 +26,19 @@ class SignUpBody extends StatefulWidget {
 }
 
 class _SignUpBodyState extends State<SignUpBody> {
+  final nameFormKey = GlobalKey<FormState>();
+  final usernameFormKey = GlobalKey<FormState>();
+  final emailFormKey = GlobalKey<FormState>();
+  final passwordFormKey = GlobalKey<FormState>();
+
   late final TextEditingController nameController;
+  late final TextEditingController usernameController;
   late final TextEditingController emailController;
   late final TextEditingController phoneNumberController;
   late final TextEditingController passwordController;
+
+  late final RegExp nameRegExp;
+  late final RegExp phoneRegExp;
 
   bool isObscured = false;
 
@@ -33,9 +47,13 @@ class _SignUpBodyState extends State<SignUpBody> {
     super.initState();
 
     nameController = TextEditingController();
+    usernameController = TextEditingController();
     emailController = TextEditingController();
     phoneNumberController = TextEditingController();
     passwordController = TextEditingController();
+
+    nameRegExp = RegExp('[a-zA-Z]');
+    phoneRegExp = RegExp('[0-9]');
   }
 
   @override
@@ -43,6 +61,7 @@ class _SignUpBodyState extends State<SignUpBody> {
     super.dispose();
 
     nameController.dispose();
+    usernameController.dispose();
     emailController.dispose();
     phoneNumberController.dispose();
     passwordController.dispose();
@@ -59,7 +78,8 @@ class _SignUpBodyState extends State<SignUpBody> {
     return ListView(
       padding: const EdgeInsets.all(AppDimensions.large),
       children: [
-        const SizedBox(height: AppDimensions.superLarge),
+        const SizedBox(height: AppDimensions.large),
+        Image.asset(AppAssets.signUpIllustration),
         Text(
           context.locale.signUp,
           style: context.themeData.textTheme.displayLarge?.copyWith(
@@ -69,13 +89,18 @@ class _SignUpBodyState extends State<SignUpBody> {
         ),
         const SizedBox(height: AppDimensions.extraLarge),
         InputField(
-          controller: nameController,
-          hintText: context.locale.name,
-        ),
-        const SizedBox(height: AppDimensions.large),
-        InputField(
+          formKey: emailFormKey,
           controller: emailController,
           hintText: context.locale.email,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return context.locale.pleaseEnterYourEmail;
+            } else if (!EmailValidator.validate(value)) {
+              return context.locale.pleaseEnterYourCorrectEmail;
+            } else {
+              return null;
+            }
+          },
         ),
         const SizedBox(height: AppDimensions.large),
         InputField(
@@ -84,6 +109,7 @@ class _SignUpBodyState extends State<SignUpBody> {
         ),
         const SizedBox(height: AppDimensions.large),
         InputField(
+          formKey: passwordFormKey,
           controller: passwordController,
           hintText: context.locale.password,
           obscureText: isObscured,
@@ -94,6 +120,15 @@ class _SignUpBodyState extends State<SignUpBody> {
             ),
             onPressed: toggleObscure,
           ),
+          validator: (value) {
+            if (value!.isEmpty) {
+              return context.locale.pleaseReEnterPassword;
+            } else if (value.length < 8) {
+              return context.locale.minimumEightCharacter;
+            } else {
+              return null;
+            }
+          },
         ),
         const SizedBox(height: AppDimensions.superLarge),
         CustomButton(
@@ -105,7 +140,22 @@ class _SignUpBodyState extends State<SignUpBody> {
             ),
           ],
           text: context.locale.createAccount,
-          onTap: () {},
+          onTap: () {
+            final validateEmail = emailFormKey.currentState?.validate();
+            final validatePassword = passwordFormKey.currentState?.validate();
+
+            if (validateEmail == true && validatePassword == true) {
+              widget.cubit.signUpWithPassword(
+                email: emailController.text.trim(),
+                password: passwordController.text.trim(),
+                onError: (error) => context.showErrorSnackbar(error),
+                onSuccess: () => widget.cubit.navigateToBioPage(
+                  email: emailController.text.trim(),
+                  phoneNumber: phoneNumberController.text.trim(),
+                ),
+              );
+            }
+          },
         ),
         const SizedBox(height: AppDimensions.large),
         Row(

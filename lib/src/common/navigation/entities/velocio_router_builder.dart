@@ -11,7 +11,7 @@ import 'package:velocio/src/common/navigation/entities/base_routes.dart';
 typedef VelocioRouteBuilder<T extends Widget>
     = VelocioRouteWithParamsBuilder<T, void, void>;
 
-typedef CrmRouteWithParamBuilder<T extends Widget, P>
+typedef VelocioRouteWithParamBuilder<T extends Widget, P>
     = VelocioRouteWithParamsBuilder<T, P, void>;
 
 /// Type parameter [P] is the type of the parameter that can be passed
