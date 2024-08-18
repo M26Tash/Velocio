@@ -96,6 +96,7 @@ final class InputField extends StatelessWidget {
     return Form(
       key: formKey,
       child: TextFormField(
+        
         initialValue: initialValue,
         onTap: onTap,
         readOnly: readOnly ?? false,
@@ -123,16 +124,17 @@ final class InputField extends StatelessWidget {
               fillColor: context.theme.inputFieldFillColor,
               suffixIcon: suffixIcon,
               prefixIcon: prefixIcon,
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(
-                    AppDimensions.large,
-                  ),
-                ),
-                borderSide: BorderSide(
-                  color: context.theme.mainColor,
-                ),
-              ),
+
+              // border: OutlineInputBorder(
+              //   borderRadius: const BorderRadius.all(
+              //     Radius.circular(
+              //       AppDimensions.large,
+              //     ),
+              //   ),
+              //   borderSide: BorderSide(
+              //     color: context.theme.mainColor,
+              //   ),
+              // ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: colorPath.transparentColor,
@@ -174,6 +176,8 @@ final class InputField extends StatelessWidget {
             ),
         onChanged: onChanged,
         maxLength: maxLength,
+        autocorrect: false,
+        enableSuggestions: false,
       ),
     );
   }

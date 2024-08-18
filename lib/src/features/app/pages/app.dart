@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:velocio/src/common/cubit_scope/cubit_scope.dart';
 import 'package:velocio/src/common/di/injector.dart';
 import 'package:velocio/src/common/navigation/app_router.dart';
@@ -27,13 +26,13 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> {
-  final supabase = Supabase.instance.client;
+class _AppState extends State<App> with WidgetsBindingObserver {
   late final GoRouter _router;
 
   final AppOverlayCubit _overlayCubit = i.get<AppOverlayCubit>();
   final ThemeCubit _themeCubit = i.get<ThemeCubit>();
   final AppLocaleCubit _appLocaleCubit = i.get<AppLocaleCubit>();
+  final AppCubit _appCubit = i.get<AppCubit>();
 
   @override
   void initState() {
@@ -53,6 +52,8 @@ class _AppState extends State<App> {
     _themeCubit.readThemeType();
 
     _appLocaleCubit.readLocale();
+
+    WidgetsBinding.instance.addObserver(this);
   }
 
   VelocioTheme _velocioTheme(AppState state) {
@@ -107,6 +108,22 @@ class _AppState extends State<App> {
     } else {
       SystemChrome.setSystemUIOverlayStyle(
         state.style!,
+      );
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused) {
+      _appCubit.getUserStatus(
+        isActive: false,
+      );
+    }
+    if (state == AppLifecycleState.resumed) {
+      _appCubit.getUserStatus(
+        isActive: true,
       );
     }
   }

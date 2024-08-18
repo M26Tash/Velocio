@@ -6,8 +6,11 @@ abstract interface class IAuthRepository {
 
   Session? get session;
 
+  User? get currentUser;
+
   Future<void> signUpWithPassword({
     required String email,
+    required String phoneNumber,
     required String password,
     required Function(String) onError,
     required VoidCallback onSuccess,
@@ -29,7 +32,7 @@ abstract interface class IAuthRepository {
   Future<void> signOut({
     required Function(String) onError,
   });
-  
+
   Future<void> verifyOtp({
     required String email,
     required String token,

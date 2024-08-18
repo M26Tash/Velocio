@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:velocio/src/core/domain/interfaces/i_auth_repository.dart';
 
 final class AuthInteractor {
@@ -9,6 +10,8 @@ final class AuthInteractor {
   String? get userId => _authRepository.userId;
 
   bool get isAuth => _authRepository.session != null;
+
+  User? get currentUser => _authRepository.currentUser;
 
   Future<void> loginWithPassword({
     required String email,
@@ -38,12 +41,14 @@ final class AuthInteractor {
 
   Future<void> signUpWithPassword({
     required String email,
+    required String phoneNumber,
     required String password,
     required Function(String) onError,
     required VoidCallback onSuccess,
   }) async {
     return _authRepository.signUpWithPassword(
       email: email,
+      phoneNumber: phoneNumber,
       password: password,
       onError: onError,
       onSuccess: onSuccess,

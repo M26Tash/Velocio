@@ -1,6 +1,9 @@
+// ignore_for_file: use_if_null_to_convert_nulls_to_bools
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocio/src/common/cubit_scope/cubit_scope.dart';
+import 'package:velocio/src/common/di/injector.dart';
 import 'package:velocio/src/common/navigation/entities/go_router_extension.dart';
 import 'package:velocio/src/common/widgets/base_page/base_page.dart';
 import 'package:velocio/src/features/auth_page/cubit/auth_cubit.dart';
@@ -16,6 +19,8 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  final authCubit = i.get<AuthCubit>();
+
   bool showSignInPage = true;
 
   void togglePages() {

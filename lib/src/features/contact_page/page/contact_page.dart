@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocio/src/common/cubit_scope/cubit_scope.dart';
+import 'package:velocio/src/common/di/injector.dart';
 import 'package:velocio/src/common/navigation/entities/go_router_extension.dart';
 import 'package:velocio/src/common/theme/theme_extension.dart';
 import 'package:velocio/src/common/utils/constants/app_fonts.dart';
@@ -10,8 +11,22 @@ import 'package:velocio/src/features/contact_page/cubit/contact_cubit.dart';
 import 'package:velocio/src/features/contact_page/widgets/contact_body.dart';
 import 'package:velocio/src/localization/localizations_ext.dart';
 
-class ContactPage extends StatelessWidget {
+class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
+
+  @override
+  State<ContactPage> createState() => _ContactPageState();
+}
+
+class _ContactPageState extends State<ContactPage> {
+  final contactCubit = i.get<ContactCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    contactCubit.getContacts();
+  }
 
   void _listener(BuildContext context, ContactState state) {
     if (state.route.type != null) {
@@ -31,6 +46,15 @@ class ContactPage extends StatelessWidget {
         listenWhen: _listenWhen,
         builder: (context, state) {
           final cubit = CubitScope.of<ContactCubit>(context);
+
+          if (state.contactFilter.isEmpty) {
+            return const BasePage(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
           return BasePage(
             appBar: CustomAppBar(
               isLeading: true,
@@ -48,6 +72,8 @@ class ContactPage extends StatelessWidget {
             body: ContactBody(
               cubit: cubit,
               contacts: state.contacts,
+              userContacts: state.userContacts,
+              contactFilter: state.contactFilter,
             ),
           );
         },

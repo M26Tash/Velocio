@@ -31,6 +31,7 @@ class MyAccountCubit extends Cubit<MyAccountState> {
 
   StreamSubscription<XFile?>? _imageSubscription;
   StreamSubscription<String?>? _avatarUrlSubscription;
+  StreamSubscription<ProfileModel?>? _profileSubscription;
 
   @override
   Future<void> close() {
@@ -39,6 +40,9 @@ class MyAccountCubit extends Cubit<MyAccountState> {
 
     _avatarUrlSubscription?.cancel();
     _avatarUrlSubscription = null;
+
+    _profileSubscription?.cancel();
+    _profileSubscription = null;
 
     return super.close();
   }
@@ -51,6 +55,15 @@ class MyAccountCubit extends Cubit<MyAccountState> {
     _avatarUrlSubscription = _dataInteractor.avatarUrlStream.listen(
       _onNewAvatarUrl,
     );
+
+    _profileSubscription?.cancel();
+    _profileSubscription = _dataInteractor.profileModelStream.listen(
+      _onNewProfileModel,
+    );
+  }
+
+  Future<void> getProfileModel() async {
+    return _dataInteractor.getProfileModel();
   }
 
   Future<void> updateUser({
@@ -58,9 +71,6 @@ class MyAccountCubit extends Cubit<MyAccountState> {
     required Function(String) onError,
     required Function onSuccess,
   }) async {
-    profile.copyWith(
-      updatedAt: DateTime.now(),
-    );
     return _dataInteractor.updateUser(
       profile: profile,
       onError: onError,
@@ -76,9 +86,9 @@ class MyAccountCubit extends Cubit<MyAccountState> {
     return _dataInteractor.uploadAvatar(file: state.file!);
   }
 
-  Future<void> getAvatarUrl() async {
-    return _dataInteractor.getAvatarUrl();
-  }
+  // Future<void> getAvatarUrl() async {
+  //   return _dataInteractor.getAvatarUrl();
+  // }
 
   void updateDateTime(DateTime dateTime) {
     final newDate = dateTime.formatWithoutTime();
@@ -113,16 +123,24 @@ class MyAccountCubit extends Cubit<MyAccountState> {
     );
 
     uploadAvatar();
-    await Future.delayed(
-      const Duration(milliseconds: 500),
-      getAvatarUrl,
-    );
+    // await Future.delayed(
+    //   const Duration(milliseconds: 500),
+    //   // getAvatarUrl,
+    // );
   }
 
   void _onNewAvatarUrl(String? avatarUrl) {
     emit(
       state.copyWith(
         avatarUrl: avatarUrl,
+      ),
+    );
+  }
+
+  void _onNewProfileModel(ProfileModel? profile) {
+    emit(
+      state.copyWith(
+        profileModel: profile,
       ),
     );
   }

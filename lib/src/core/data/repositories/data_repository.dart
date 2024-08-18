@@ -1,7 +1,10 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:velocio/src/core/data/data_source/interfaces/i_data_source.dart';
 import 'package:velocio/src/core/domain/interfaces/i_data_repository.dart';
+import 'package:velocio/src/core/domain/models/chat_model/chat_model.dart';
+import 'package:velocio/src/core/domain/models/message_model/message_model.dart';
 import 'package:velocio/src/core/domain/models/profile_model/profile_model.dart';
+import 'package:velocio/src/core/domain/models/user_status_model/user_status_model.dart';
 
 final class DataRepository implements IDataRepository {
   final IDataSource _dataSource;
@@ -16,8 +19,17 @@ final class DataRepository implements IDataRepository {
       _dataSource.profileModelStream;
 
   @override
-  Stream<List<Map<String, dynamic>>?> get messagesStream =>
-      _dataSource.messagesStream;
+  Stream<List<ChatModel>?> get chatStream => _dataSource.chatStream;
+
+  @override
+  Stream<List<MessageModel>?> get messagesStream => _dataSource.messagesStream;
+
+  @override
+  Stream<List<ProfileModel>?> get velocioUsersStream =>
+      _dataSource.velocioUsersStream;
+
+  @override
+  Stream<UserStatusModel?> get userStatusStream => _dataSource.userStatusStream;
 
   @override
   Future<void> updateUser({
@@ -48,26 +60,54 @@ final class DataRepository implements IDataRepository {
   }
 
   @override
+  Future<void> getChats() async {
+    return _dataSource.getChats();
+  }
+
+  @override
   Future<void> sendMessage({
+    required String chatId,
     required String senderId,
-    required String receiverId,
     required String content,
   }) async {
     return _dataSource.sendMessage(
+      chatId: chatId,
       senderId: senderId,
-      receiverId: receiverId,
       content: content,
     );
   }
 
   @override
   Future<void> getMessages({
-    required String senderId,
-    required String receiverId,
+    required String chatId,
   }) async {
     return _dataSource.getMessages(
-      senderId: senderId,
-      receiverId: receiverId,
+      chatId: chatId,
+    );
+  }
+
+  @override
+  Future<void> findConversation({
+    required String personName,
+  }) async {
+    return _dataSource.findConversation(
+      personName: personName,
+    );
+  }
+
+  @override
+  Future<void> getVelocioUserPhoneNumber({
+    required List<String> contactFilter,
+  }) async {
+    return _dataSource.getVelocioUserPhoneNumber(
+      contactFilter: contactFilter,
+    );
+  }
+
+  @override
+  Future<void> getUserStatus({required bool isActive}) async {
+    return _dataSource.getUserStatus(
+      isActive: isActive,
     );
   }
 }

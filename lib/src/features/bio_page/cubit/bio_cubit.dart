@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:velocio/src/common/navigation/configurations.dart';
 import 'package:velocio/src/common/navigation/entities/custom_route.dart';
 import 'package:velocio/src/common/utils/extensions/date_time_extension.dart';
+import 'package:velocio/src/core/domain/interactors/auth_interactor.dart';
 import 'package:velocio/src/core/domain/interactors/data_interactor.dart';
 import 'package:velocio/src/core/domain/interactors/settings_interactor.dart';
 import 'package:velocio/src/core/domain/models/profile_model/profile_model.dart';
@@ -15,9 +16,11 @@ part 'bio_state.dart';
 class BioCubit extends Cubit<BioState> {
   final DataInteractor _dataInteractor;
   final SettingsInteractor _settingsInteractor;
+  final AuthInteractor _authInteractor;
   BioCubit(
     this._dataInteractor,
     this._settingsInteractor,
+    this._authInteractor,
   ) : super(
           BioState(
             route: const CustomRoute(null, null),
@@ -56,14 +59,20 @@ class BioCubit extends Cubit<BioState> {
     // getAvatarUrl();
   }
 
+  Future<void> signOut() {
+    return _authInteractor.signOut(
+      onError: (p0) {},
+    );
+  }
+
   Future<void> updateUser({
     required ProfileModel profile,
     required Function(String) onError,
     required Function onSuccess,
   }) async {
-    profile.copyWith(
-      updatedAt: DateTime.now(),
-    );
+    // profile.copyWith(
+    // updatedAt: DateTime.now(),
+    // );
     return _dataInteractor.updateUser(
       profile: profile,
       onError: onError,

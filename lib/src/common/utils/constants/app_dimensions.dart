@@ -7,6 +7,7 @@ abstract final class AppDimensions {
   static const double extraLarge = 32;
   static const double superLarge = 64;
 
+  static const double maxMessageArea = 100;
   // InputField value
   static const int defaultMinLines = 1;
   static const int defaultMaxLines = 2;

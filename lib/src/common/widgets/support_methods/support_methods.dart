@@ -62,7 +62,12 @@ abstract final class SupportMethods {
       barrierColor: barrierColor,
       builder: (_) {
         return Padding(
-          padding: const EdgeInsets.all(AppDimensions.large),
+          padding: MediaQuery.of(context).viewInsets,
+          // padding: EdgeInsets.only(
+          //   left: AppDimensions.large,
+          //   right: AppDimensions.large,
+          //   bottom: MediaQuery.of(context).viewInsets.bottom,
+          // ),
           child: Material(
             color: context.theme.tertiaryColor,
             borderRadius: const BorderRadius.all(

@@ -30,32 +30,34 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: context.theme.transparentColor,
-      elevation: AppDimensions.none,
-      automaticallyImplyLeading: false,
-      leading: isLeading == true
-          ? IconButton(
-            onPressed: onLeadingPressed,
-            icon: Icon(
-              icon ?? Icons.arrow_back_ios_new_rounded,
-              color: context.theme.primaryIconColor,
-            ),
-          )
-          : const SizedBox.shrink(),
-      titleSpacing: AppDimensions.none,
-      centerTitle: centerTitle,
-      title: title,
-      // title: title != null
-      //     ? Text(
-      //         title!,
-      //         style: context.themeData.textTheme.headlineMedium?.copyWith(
-      //           fontWeight: AppFonts.weightBold,
-      //           fontSize: AppFonts.sizeHeadlineMedium,
-      //           color: context.theme.primaryTextColor,
-      //         ),
-      //       )
-      //     : null,
+    return SafeArea(
+      child: AppBar(
+        backgroundColor: context.theme.transparentColor,
+        elevation: AppDimensions.none,
+        automaticallyImplyLeading: false,
+        leading: isLeading == true
+            ? IconButton(
+                onPressed: onLeadingPressed,
+                icon: Icon(
+                  icon ?? Icons.arrow_back_ios_new_rounded,
+                  color: context.theme.primaryIconColor,
+                ),
+              )
+            : const SizedBox.shrink(),
+        titleSpacing: AppDimensions.none,
+        centerTitle: centerTitle,
+        title: title,
+        // title: title != null
+        //     ? Text(
+        //         title!,
+        //         style: context.themeData.textTheme.headlineMedium?.copyWith(
+        //           fontWeight: AppFonts.weightBold,
+        //           fontSize: AppFonts.sizeHeadlineMedium,
+        //           color: context.theme.primaryTextColor,
+        //         ),
+        //       )
+        //     : null,
+      ),
     );
   }
 

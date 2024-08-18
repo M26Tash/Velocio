@@ -43,10 +43,12 @@ void initCubits() {
       () => AppCubit(
         i.get(),
         i.get(),
+        i.get(),
       ),
     )
     ..registerFactory<AuthCubit>(
       () => AuthCubit(
+        i.get(),
         i.get(),
       ),
     )
@@ -57,7 +59,9 @@ void initCubits() {
       ),
     )
     ..registerFactory<MainCubit>(
-      MainCubit.new,
+      () => MainCubit(
+        i.get(),
+      ),
     )
     ..registerFactory<SettingsCubit>(
       () => SettingsCubit(
@@ -70,6 +74,7 @@ void initCubits() {
     ..registerFactory<ContactCubit>(
       () => ContactCubit(
         i.get(),
+        i.get(),
       ),
     )
     ..registerFactory<DeviceManagementCubit>(
@@ -77,6 +82,7 @@ void initCubits() {
     )
     ..registerFactory<BioCubit>(
       () => BioCubit(
+        i.get(),
         i.get(),
         i.get(),
       ),

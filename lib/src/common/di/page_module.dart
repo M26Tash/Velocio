@@ -30,5 +30,11 @@ void initPages() {
     ..registerFactory<MyAccountPage>(MyAccountPage.new)
     ..registerFactory<PrivacyPage>(PrivacyPage.new)
     ..registerFactory<SecurityPage>(SecurityPage.new)
-    ..registerFactory<ChatPage>(ChatPage.new);
+    ..registerFactoryParam<ChatPage, ChatArguments, void>(
+      (args, _) => ChatPage(
+        chatId: args.chatId,
+        receiverName: args.receiverName,
+        profile: args.profile,
+      ),
+    );
 }

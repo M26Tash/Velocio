@@ -1,6 +1,8 @@
 import 'package:velocio/src/common/navigation/entities/page_configuration.dart';
 import 'package:velocio/src/common/navigation/routes.dart';
+import 'package:velocio/src/core/domain/models/profile_model/profile_model.dart';
 import 'package:velocio/src/features/bio_page/pages/bio_page.dart';
+import 'package:velocio/src/features/chat_page/pages/chat_page.dart';
 
 PageConfiguration authConfig() {
   return PageConfiguration(path: Routes.authPath.name);
@@ -19,7 +21,9 @@ PageConfiguration mainConfig() {
 }
 
 PageConfiguration settingsConfig() {
-  return PageConfiguration(path: Routes.settingsPath.name);
+  return PageConfiguration(
+    path: Routes.settingsPath.name,
+  );
 }
 
 PageConfiguration contactConfig() {
@@ -55,6 +59,17 @@ PageConfiguration securityConfig() {
   return PageConfiguration(path: Routes.securityPath.name);
 }
 
-PageConfiguration chatConfig() {
-  return PageConfiguration(path: Routes.chatPath.name);
+PageConfiguration chatConfig({
+  required String? chatId,
+  required String? receiverName,
+  required ProfileModel? profile,
+}) {
+  return PageConfiguration(
+    path: Routes.chatPath.name,
+    args: ChatArguments(
+      chatId: chatId,
+      receiverName: receiverName,
+      profile: profile,
+    ),
+  );
 }

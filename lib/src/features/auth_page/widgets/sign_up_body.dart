@@ -143,10 +143,12 @@ class _SignUpBodyState extends State<SignUpBody> {
           onTap: () {
             final validateEmail = emailFormKey.currentState?.validate();
             final validatePassword = passwordFormKey.currentState?.validate();
-
+            
             if (validateEmail == true && validatePassword == true) {
+              
               widget.cubit.signUpWithPassword(
                 email: emailController.text.trim(),
+                phoneNumber: phoneNumberController.text.trim(),
                 password: passwordController.text.trim(),
                 onError: (error) => context.showErrorSnackbar(error),
                 onSuccess: () => widget.cubit.navigateToBioPage(

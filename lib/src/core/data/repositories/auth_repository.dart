@@ -15,6 +15,9 @@ final class AuthRepository implements IAuthRepository {
   Session? get session => _authDataSource.session;
 
   @override
+  User? get currentUser => _authDataSource.currentUser;
+
+  @override
   Future<void> loginWithPassword({
     required String email,
     required String password,
@@ -45,12 +48,14 @@ final class AuthRepository implements IAuthRepository {
   @override
   Future<void> signUpWithPassword({
     required String email,
+    required String phoneNumber,
     required String password,
     required Function(String) onError,
     required VoidCallback onSuccess,
   }) async {
     return _authDataSource.signUpWithPassword(
       email: email,
+      phoneNumber: phoneNumber,
       password: password,
       onError: onError,
       onSuccess: onSuccess,

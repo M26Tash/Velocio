@@ -7,12 +7,15 @@ import 'package:velocio/src/common/theme/theme_extension.dart';
 import 'package:velocio/src/common/utils/constants/app_fonts.dart';
 import 'package:velocio/src/common/widgets/base_page/base_page.dart';
 import 'package:velocio/src/common/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:velocio/src/core/domain/models/profile_model/profile_model.dart';
 import 'package:velocio/src/features/settings_page/cubit/settings_cubit.dart';
 import 'package:velocio/src/features/settings_page/widgets/settings_body.dart';
 import 'package:velocio/src/localization/localizations_ext.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  const SettingsPage({
+    super.key,
+  });
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -49,9 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
         builder: (context, state) {
           final cubit = CubitScope.of<SettingsCubit>(context);
 
-          // ignore: lines_longer_than_80_chars
-          if (state.profileModel!.fullName == '' ||
-              state.profileModel!.fullName == null) {
+          if (state.profileModel == const ProfileModel().empty()) {
             return BasePage(
               body: Center(
                 child: CircularProgressIndicator(
@@ -60,6 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             );
           }
+          
           return BasePage(
             appBar: CustomAppBar(
               isLeading: true,
@@ -78,8 +80,6 @@ class _SettingsPageState extends State<SettingsPage> {
               currentLocale: Locale(context.locale.localeName),
               currentThemeType: cubit.currentThemeType,
               cubit: cubit,
-              avatarUrl: state.avatarUrl,
-              fullName: state.fullName,
               profileModel: state.profileModel!,
             ),
           );

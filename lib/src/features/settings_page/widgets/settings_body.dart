@@ -18,15 +18,11 @@ class SettingsBody extends StatefulWidget {
   final ThemeType currentThemeType;
   final Locale currentLocale;
   final SettingsCubit cubit;
-  final String? avatarUrl;
-  final String? fullName;
   final ProfileModel profileModel;
   const SettingsBody({
     required this.currentThemeType,
     required this.currentLocale,
     required this.cubit,
-    required this.avatarUrl,
-    required this.fullName,
     required this.profileModel,
     super.key,
   });
@@ -56,11 +52,14 @@ class _SettingsBodyState extends State<SettingsBody> {
       ),
       children: [
         CircleAvatar(
-          backgroundColor: context.theme.secondaryColor,
           radius: 70,
-          backgroundImage:
-              widget.avatarUrl != null ? NetworkImage(widget.avatarUrl!) : null,
-          child: widget.avatarUrl == null
+          backgroundColor: context.theme.secondaryColor,
+          foregroundImage: widget.profileModel.avatarUrl != null
+              ? NetworkImage(
+                  widget.profileModel.avatarUrl!,
+                )
+              : null,
+          child: widget.profileModel.avatarUrl == null
               ? CustomVector(
                   assetPath: AppAssets.imageIcon,
                   height: 60,

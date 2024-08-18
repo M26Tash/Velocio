@@ -3,7 +3,7 @@
 import 'package:velocio/src/core/domain/models/domain_object.dart';
 
 final class ProfileModel extends DomainObject {
-  final DateTime? updatedAt;
+  final String? updatedAt;
   final String? username;
   final String? fullName;
   final String? avatarUrl;
@@ -12,8 +12,12 @@ final class ProfileModel extends DomainObject {
   final String? bio;
   final String? email;
   final String? phoneNumber;
+  final bool? isActive;
+  final String? lastActive;
+  final bool? isProfileCompleted;
 
   const ProfileModel({
+    this.isActive = false,
     this.updatedAt,
     this.username,
     this.fullName,
@@ -23,10 +27,13 @@ final class ProfileModel extends DomainObject {
     this.bio,
     this.email,
     this.phoneNumber,
+    this.lastActive,
+    this.isProfileCompleted,
   });
 
   @override
   List<Object?> get props => [
+        isActive,
         updatedAt,
         username,
         fullName,
@@ -36,14 +43,15 @@ final class ProfileModel extends DomainObject {
         bio,
         email,
         phoneNumber,
+        lastActive,
+        isProfileCompleted,
       ];
 
   @override
-  ProfileModel copyWith({
-    DateTime? updatedAt,
-  }) {
+  ProfileModel copyWith() {
     return ProfileModel(
-      updatedAt: updatedAt ?? this.updatedAt,
+      isActive: isActive,
+      updatedAt: updatedAt,
       username: username,
       fullName: fullName,
       avatarUrl: avatarUrl,
@@ -52,11 +60,14 @@ final class ProfileModel extends DomainObject {
       bio: bio,
       email: email,
       phoneNumber: phoneNumber,
+      lastActive: lastActive,
+      isProfileCompleted: isProfileCompleted,
     );
   }
 
   ProfileModel empty() {
     return const ProfileModel(
+      isActive: false,
       updatedAt: null,
       username: '',
       fullName: '',
@@ -66,6 +77,8 @@ final class ProfileModel extends DomainObject {
       bio: '',
       email: '',
       phoneNumber: '',
+      lastActive: '',
+      isProfileCompleted: false,
     );
   }
 }

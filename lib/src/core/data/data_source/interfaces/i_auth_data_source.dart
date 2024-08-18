@@ -6,6 +6,8 @@ abstract interface class IAuthDataSource {
 
   Session? get session;
 
+  User? get currentUser;
+
   Future<void> loginWithPassword({
     required String email,
     required String password,
@@ -21,6 +23,7 @@ abstract interface class IAuthDataSource {
 
   Future<void> signUpWithPassword({
     required String email,
+    required String phoneNumber,
     required String password,
     required Function(String) onError,
     required VoidCallback onSuccess,

@@ -7,11 +7,15 @@ class BasePage extends StatelessWidget {
   final CustomAppBar? appBar;
   final Widget? body;
   final bool? resizeToAvoidBottomInset;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
   const BasePage({
     this.backgroundColor,
     this.appBar,
     this.body,
     this.resizeToAvoidBottomInset,
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
     super.key,
   });
 
@@ -22,6 +26,9 @@ class BasePage extends StatelessWidget {
       backgroundColor: backgroundColor ?? context.theme.backgroundColor,
       appBar: appBar,
       body: body,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      
     );
   }
 }

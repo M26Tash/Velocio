@@ -33,6 +33,14 @@ abstract final class AppAssets {
   static const String passwordIcon = '${_assetsVector}password_icon.svg';
   static const String authIcon = '${_assetsVector}auth_icon.svg';
 
+  static const String sendIcon = '${_assetsVector}send_icon.svg';
+
+  static const String infinityLoadingIcon =
+      '${_assetsVector}infinity_loading_icon.svg';
+
+  static const String test =
+      '${_assetsVector}test.json';
+
   // ILLUSTRATIONS
   static const String signUpIllustration =
       '${_assetsIllustration}sign_up_illustration.png';

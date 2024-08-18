@@ -77,6 +77,8 @@ abstract final class AppRouter {
     VelocioRouteBuilder<ChatPage>(
       i: _i,
       routeConfig: Routes.chatPath,
+      getFirstParams: (state) => state.extra! as ChatArguments,
+      
     ).buildTransparentRoute(),
   ];
 

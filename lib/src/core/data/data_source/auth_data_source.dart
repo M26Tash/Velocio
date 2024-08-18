@@ -14,6 +14,9 @@ class AuthDataSource implements IAuthDataSource {
   Session? get session => supabase.auth.currentSession;
 
   @override
+  User? get currentUser => supabase.auth.currentUser;
+
+  @override
   Future<void> loginWithPassword({
     required String email,
     required String password,
@@ -61,6 +64,7 @@ class AuthDataSource implements IAuthDataSource {
   @override
   Future<void> signUpWithPassword({
     required String email,
+    required String phoneNumber,
     required String password,
     required Function(String) onError,
     required Function onSuccess,
@@ -70,6 +74,14 @@ class AuthDataSource implements IAuthDataSource {
         email: email,
         password: password,
       );
+
+      // await supabase.auth.updateUser(
+      //   UserAttributes(
+      //     email: email,
+      //     phone: phoneNumber,
+      //   ),
+      // );
+
       onSuccess();
     } on AuthException catch (e) {
       CustomLogger.errorLog(

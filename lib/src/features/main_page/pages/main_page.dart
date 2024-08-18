@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocio/src/common/cubit_scope/cubit_scope.dart';
+import 'package:velocio/src/common/di/injector.dart';
 import 'package:velocio/src/common/navigation/entities/go_router_extension.dart';
 import 'package:velocio/src/common/theme/theme_extension.dart';
+import 'package:velocio/src/common/utils/constants/app_assets.dart';
 import 'package:velocio/src/common/utils/constants/app_dimensions.dart';
 import 'package:velocio/src/common/utils/constants/app_fonts.dart';
 import 'package:velocio/src/common/widgets/base_page/base_page.dart';
 import 'package:velocio/src/common/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:velocio/src/common/widgets/custom_drawer/custom_drawer.dart';
+import 'package:velocio/src/common/widgets/custom_vector_button/custom_vector_button.dart';
 import 'package:velocio/src/features/main_page/cubit/main_cubit.dart';
 import 'package:velocio/src/features/main_page/widgets/main_body.dart';
+import 'package:velocio/src/localization/localizations_ext.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -20,6 +24,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final mainCubit = i.get<MainCubit>();
+
   late final AdvancedDrawerController _advancedDrawerController;
 
   @override
@@ -27,6 +33,12 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     _advancedDrawerController = AdvancedDrawerController();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => mainCubit
+        ..getChats()
+        ..getProfileModel(),
+    );
   }
 
   @override
@@ -54,6 +66,17 @@ class _MainPageState extends State<MainPage> {
         listenWhen: _listenWhen,
         builder: (context, state) {
           final cubit = CubitScope.of<MainCubit>(context);
+
+          if (state.profile == null || state.chats == null) {
+            return BasePage(
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: context.theme.mainColor,
+                ),
+              ),
+            );
+          }
+
           return AdvancedDrawer(
             backdropColor: context.theme.tertiaryColor,
             controller: _advancedDrawerController,
@@ -65,6 +88,7 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             drawer: CustomDrawer(
+              profileModel: state.profile!,
               onContactPageTap: cubit.navigateToContactPage,
               onSettingsPageTap: cubit.navigateToSettingsPage,
             ),
@@ -75,7 +99,7 @@ class _MainPageState extends State<MainPage> {
                 onLeadingPressed: _advancedDrawerController.showDrawer,
                 centerTitle: true,
                 title: Text(
-                  'Velocio',
+                  context.locale.velocio,
                   style: context.themeData.textTheme.headlineMedium?.copyWith(
                     color: context.theme.primaryTextColor,
                     fontWeight: AppFonts.weightMedium,
@@ -84,6 +108,19 @@ class _MainPageState extends State<MainPage> {
               ),
               body: MainBody(
                 cubit: cubit,
+                chats: state.chats!,
+              ),
+              floatingActionButton: CustomVectorButton(
+                buttonColor: context.theme.mainColor,
+                buttonShape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      AppDimensions.large,
+                    ),
+                  ),
+                ),
+                assetPath: AppAssets.addIcon,
+                onPressed: cubit.navigateToContactPage,
               ),
             ),
           );

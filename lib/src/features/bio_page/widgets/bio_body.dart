@@ -43,6 +43,8 @@ class _BioBodyState extends State<BioBody> {
   final locationFormKey = GlobalKey<FormState>();
   final bioFormKey = GlobalKey<FormState>();
 
+  final formKey = GlobalKey<FormState>();
+
   late final TextEditingController _usernameController;
   late final TextEditingController _fullNameController;
   late final TextEditingController _locationController;
@@ -91,147 +93,169 @@ class _BioBodyState extends State<BioBody> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(AppDimensions.large),
-      children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            CircleAvatar(
-              backgroundColor: context.theme.secondaryColor,
-              radius: 70,
-              backgroundImage: widget.avatarUrl != null
-                  ? NetworkImage(widget.avatarUrl!)
-                  : null,
-              child: widget.avatarUrl == null
-                  ? CustomVector(
-                      assetPath: AppAssets.imageIcon,
-                      height: 60,
-                      color: context.theme.primaryIconColor,
-                    )
-                  : const SizedBox.shrink(),
-            ),
-            // HARD CODE
-            Positioned(
-              top: 80,
-              left: 220,
-              child: CustomVectorButton(
-                isSmall: true,
-                buttonColor: context.theme.mainColor,
-                assetPath: AppAssets.editIcon,
-                onPressed: () async {
-                  widget.cubit.pickImage();
-                },
+    return Form(
+      key: formKey,
+      autovalidateMode: AutovalidateMode.disabled,
+      child: ListView(
+        padding: const EdgeInsets.all(AppDimensions.large),
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              CircleAvatar(
+                backgroundColor: context.theme.secondaryColor,
+                radius: 70,
+                backgroundImage: widget.avatarUrl != null
+                    ? NetworkImage(widget.avatarUrl!)
+                    : null,
+                child: widget.avatarUrl == null
+                    ? CustomVector(
+                        assetPath: AppAssets.imageIcon,
+                        height: 60,
+                        color: context.theme.primaryIconColor,
+                      )
+                    : const SizedBox.shrink(),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppDimensions.extraLarge),
-        InputField(
-          formKey: usernameFormKey,
-          controller: _usernameController,
-          hintText: context.locale.username,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return context.locale.pleaseEnterYourUsername;
-            } else {
-              return null;
-            }
-          },
-        ),
-        const SizedBox(height: AppDimensions.large),
-        InputField(
-          formKey: nameFormKey,
-          controller: _fullNameController,
-          hintText: context.locale.fullName,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return context.locale.pleaseEnterYourFullName;
-            } else if (!nameRegExp.hasMatch(value)) {
-              return context.locale.pleaseUseOnlyLetters;
-            } else {
-              return null;
-            }
-          },
-        ),
-        const SizedBox(height: AppDimensions.large),
-        CustomButton(
-          backgroundColor: context.theme.inputFieldFillColor,
-          onTap: _showDatePicker,
-          child: Text(
-            widget.dateOfBirth ?? context.locale.dateOfBirth,
-            style: widget.dateOfBirth != null
-                ? context.themeData.textTheme.headlineMedium?.copyWith(
-                    color: context.theme.primaryTextColor,
-                    fontWeight: AppFonts.weightRegular,
-                  )
-                : context.themeData.textTheme.titleLarge?.copyWith(
-                    color: context.theme.tertiaryTextColor,
-                    height: AppFonts.sizeFactorLarge,
-                  ),
-          ),
-        ),
-        const SizedBox(height: AppDimensions.large),
-        InputField(
-          formKey: locationFormKey,
-          controller: _locationController,
-          hintText: context.locale.location,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return context.locale.pleaseEnterYourLocation;
-            } else {
-              return null;
-            }
-          },
-        ),
-        const SizedBox(height: AppDimensions.large),
-        InputField(
-          formKey: bioFormKey,
-          controller: _bioController,
-          hintText: context.locale.bio,
-          maxLength: AppDimensions.bioMaxLength,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return context.locale.pleaseEnterYourBIO;
-            } else {
-              return null;
-            }
-          },
-        ),
-        const SizedBox(height: AppDimensions.large),
-        CustomButton(
-          text: context.locale.submit,
-          onTap: () {
-            final validateName = nameFormKey.currentState?.validate() == true;
-            final validateUsername =
-                usernameFormKey.currentState?.validate() == true;
-            final validateLocation =
-                locationFormKey.currentState?.validate() == true;
-            final validateBio = bioFormKey.currentState?.validate() == true;
-            final validateDateOfBirth = widget.dateOfBirth != null;
-            if (validateName &&
-                validateUsername &&
-                validateLocation &&
-                validateBio &&
-                validateDateOfBirth) {
-              widget.cubit.updateProfile(
-                profile: ProfileModel(
-                  username: _usernameController.text.trim(),
-                  fullName: _fullNameController.text.trim(),
-                  dateOfBirth: widget.dateOfBirth,
-                  location: _locationController.text.trim(),
-                  bio: _bioController.text.trim(),
-                  avatarUrl: widget.avatarUrl,
-                  email: widget.email,
-                  phoneNumber: widget.phoneNumber,
+              // HARD CODE
+              Positioned(
+                top: 80,
+                left: 220,
+                child: CustomVectorButton(
+                  isSmall: true,
+                  buttonColor: context.theme.mainColor,
+                  assetPath: AppAssets.editIcon,
+                  onPressed: () async {
+                    widget.cubit.pickImage();
+                  },
                 ),
-                onError: (error) => context.showErrorSnackbar(error),
-                onSuccess: widget.cubit.navigateToMainPage,
-              );
-            }
-          },
-        ),
-      ],
+              ),
+            ],
+          ),
+          const SizedBox(height: AppDimensions.extraLarge),
+          InputField(
+            formKey: usernameFormKey,
+            controller: _usernameController,
+            hintText: context.locale.username,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return context.locale.pleaseEnterYourUsername;
+              } else {
+                return null;
+              }
+            },
+          ),
+          const SizedBox(height: AppDimensions.large),
+          InputField(
+            formKey: nameFormKey,
+            controller: _fullNameController,
+            hintText: context.locale.fullName,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return context.locale.pleaseEnterYourFullName;
+              } else if (!nameRegExp.hasMatch(value)) {
+                return context.locale.pleaseUseOnlyLetters;
+              } else {
+                return null;
+              }
+            },
+          ),
+          const SizedBox(height: AppDimensions.large),
+          CustomButton(
+            backgroundColor: context.theme.inputFieldFillColor,
+            onTap: _showDatePicker,
+            child: Text(
+              widget.dateOfBirth ?? context.locale.dateOfBirth,
+              style: widget.dateOfBirth != null
+                  ? context.themeData.textTheme.headlineMedium?.copyWith(
+                      color: context.theme.primaryTextColor,
+                      fontWeight: AppFonts.weightRegular,
+                    )
+                  : context.themeData.textTheme.titleLarge?.copyWith(
+                      color: context.theme.tertiaryTextColor,
+                      height: AppFonts.sizeFactorLarge,
+                    ),
+            ),
+          ),
+          const SizedBox(height: AppDimensions.large),
+          InputField(
+            formKey: locationFormKey,
+            controller: _locationController,
+            hintText: context.locale.location,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return context.locale.pleaseEnterYourLocation;
+              } else {
+                return null;
+              }
+            },
+          ),
+          const SizedBox(height: AppDimensions.large),
+          InputField(
+            formKey: bioFormKey,
+            controller: _bioController,
+            hintText: context.locale.bio,
+            maxLength: AppDimensions.bioMaxLength,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return context.locale.pleaseEnterYourBIO;
+              } else {
+                return null;
+              }
+            },
+          ),
+          const SizedBox(height: AppDimensions.large),
+          CustomButton(
+            text: context.locale.submit,
+            onTap: () {
+              final isValid = formKey.currentState?.validate() == true;
+              final isValidBirthday = (widget.dateOfBirth != null) == true;
+
+              if (isValid && isValidBirthday) {
+                if (widget.avatarUrl != null) {
+                  widget.cubit.updateProfile(
+                    profile: ProfileModel(
+                      username: _usernameController.text.trim(),
+                      fullName: _fullNameController.text.trim(),
+                      dateOfBirth: widget.dateOfBirth,
+                      location: _locationController.text.trim(),
+                      bio: _bioController.text.trim(),
+                      avatarUrl: widget.avatarUrl,
+                      email: widget.email,
+                      phoneNumber: widget.phoneNumber,
+                    ),
+                    onError: (error) => context.showErrorSnackbar(error),
+                    onSuccess: widget.cubit.navigateToMainPage,
+                  );
+                }
+
+                if (widget.avatarUrl == null || widget.avatarUrl!.isEmpty) {
+                  context.showErrorSnackbar(
+                    'Please update your avatar correctly',
+                  );
+                }
+                // widget.cubit.updateProfile(
+                //   profile: ProfileModel(
+                //     username: _usernameController.text.trim(),
+                //     fullName: _fullNameController.text.trim(),
+                //     dateOfBirth: widget.dateOfBirth,
+                //     location: _locationController.text.trim(),
+                //     bio: _bioController.text.trim(),
+                //     avatarUrl: widget.avatarUrl,
+                //     email: widget.email,
+                //     phoneNumber: widget.phoneNumber,
+                //   ),
+                //   onError: (error) => context.showErrorSnackbar(error),
+                //   onSuccess: widget.cubit.navigateToMainPage,
+                // );
+              }
+            },
+          ),
+          CustomButton(
+            onTap: widget.cubit.signOut,
+            text: '',
+          ),
+        ],
+      ),
     );
   }
 }

@@ -25,6 +25,7 @@ void initInteractors() {
     ..registerSingleton<DataInteractor>(
       DataInteractor(
         i.get(),
+        i.get(),
       ),
     )
     ..registerSingleton<LocalAuthInteractor>(
